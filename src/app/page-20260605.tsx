@@ -16,36 +16,8 @@ type Novella = {
 };
 
 const novellas: Novella[] = [
-  {
-    title: "The Other Half",
-    subtitle: "A Novella of Dual Mating and Choice",
-    cover: "/covers/the-other-half.png",
-    hero: "/heroes/the-other-half-hero.png",
-    featured: true,
-    description: [
-      "In a society shaped by divided desire, love and reproduction no longer belong to the same choice.",
-      "Selene must decide what truth costs when biology, stability, and longing pull in different directions.",
-      "What began as a private arrangement becomes a question the whole world must answer:",
-    ],
-    thesis:
-      "What happens when love, parenting, and desire are separated into different economies?",
-    tags: ["Love", "Choice", "Parenting", "Truth"],
-  },
-  {
-    title: "The Number",
-    subtitle: "Every Body Keeps Count",
-    cover: "/covers/the-number.png",
-    hero: "/heroes/the-number-hero.png",
-    featured: true,
-    description: [
-      "Everyone carries a number.",
-      "Some wear it as proof. Others hide it as shame.",
-      "But when intimacy becomes a public ledger, no one is untouched by the count:",
-    ],
-    thesis:
-      "What does a number reveal about us — and what does it erase?",
-    tags: ["Desire", "Judgment", "Gender", "Value"],
-  },
+  { title: "The Other Half", cover: null, hero: null, featured: false },
+  { title: "The Number", cover: null, hero: null, featured: false },
   {
     title: "The Chrysalis",
     subtitle: "Evolution Had Terms and Conditions",
@@ -76,126 +48,11 @@ const novellas: Novella[] = [
       "What if the greatest sin was not what you did — but what you refused to do?",
     tags: ["Silence", "Power", "Witness", "Accountability"],
   },
-  {
-    title: "The Vanishing Variable",
-    subtitle: "When Absence Becomes Evidence",
-    cover: "/covers/the-vanishing-variable.png",
-    hero: "/heroes/the-vanishing-variable-hero.png",
-    featured: true,
-    description: [
-      "A population begins disappearing from the systems that once measured them.",
-      "At first, the world calls it error. Then anomaly. Then crisis.",
-      "But disappearance may not be the end of the story:",
-    ],
-    thesis:
-      "What happens when the people a system depends on can no longer be found?",
-    tags: ["Race", "Absence", "Memory", "Extinction"],
-  },
-  {
-    title: "Blackmail, Black Male",
-    subtitle: "The Cost of Being Safe",
-    cover: "/covers/blackmail-black-male.png",
-    hero: "/heroes/blackmail-black-male-hero.png",
-    featured: true,
-    description: [
-      "Safety is never free when fear becomes a market.",
-      "A Black man discovers survival has a price.",
-      "The question is no longer whether he is guilty:",
-    ],
-    thesis:
-      "What does protection mean when the threat is built into the world around you?",
-    tags: ["Race", "Fear", "Control", "Survival"],
-  },
-  {
-    title: "Who Cleans Galt's Toilets?",
-    subtitle: "What Happens After the Revolution Wins",
-    cover: "/covers/Who-Cleans-Galts-Toilets.png",
-    hero: "/heroes/Who-Cleans-Galts-Toilets-hero.png",
-    featured: true,
-    description: [
-      "The revolution succeeded.",
-      "The architects escaped.",
-      "But paradise still needed someone to clean up after it.",
-    ],
-    thesis:
-      "Who serves the dream after the dreamers declare themselves free?",
-    tags: ["Class", "Labor", "Power", "Collapse"],
-  },
-  {
-    title: "Proxy",
-    subtitle: "Borrowed Desire, Borrowed Memory",
-    cover: "/covers/proxy.png",
-    hero: "/heroes/proxy-hero.png",
-    featured: true,
-    description: [
-      "Desire became a subscription.",
-      "Men who could not live the fantasy could now rent the memory of someone who could.",
-      "But borrowed pleasure leaves behind a question no platform can answer:",
-    ],
-    thesis:
-      "What happens when a life you never lived begins to feel more real than your own?",
-    tags: ["Desire", "Technology", "Identity", "Memory"],
-  },
-  {
-    title: "The Last Frequency",
-    subtitle: "The Signal Beneath the Noise",
-    cover: "/covers/the-last-frequency.png",
-    hero: "/heroes/the-last-frequency-hero.png",
-    featured: true,
-    description: [
-      "A signal appears where none should exist.",
-      "Some hear salvation. Others hear a warning.",
-      "As the frequency spreads, humanity must decide what it is really listening to:",
-    ],
-    thesis:
-      "What truths become audible when the noise finally disappears?",
-    tags: ["Signal", "Truth", "Consciousness", "Meaning"],
-  },
-  {
-    title: "The Robbery",
-    subtitle: "What Remains After Value Is Taken",
-    cover: "/covers/the-robbery.png",
-    hero: "/heroes/the-robbery-hero.png",
-    featured: true,
-    description: [
-      "A theft occurs in a world where ownership is already uncertain.",
-      "What was taken is less important than what the act reveals.",
-      "As the loss spreads, everyone is forced to ask what they were protecting:",
-    ],
-    thesis:
-      "What does a society lose when everything has already been priced?",
-    tags: ["Value", "Theft", "Power", "Loss"],
-  },
-  {
-    title: "The Long Goodbye",
-    subtitle: "Losing Someone Twice",
-    cover: "/covers/the-long-goodbye.png",
-    hero: "/heroes/the-long-goodbye-hero.png",
-    featured: true,
-    description: [
-      "A love story stretched across memory and loss.",
-      "He mourned her long before she died.",
-      "When the end finally arrives, grief has already changed shape.",
-    ],
-    thesis:
-      "How do you say goodbye to someone who has been leaving for years?",
-    tags: ["Memory", "Love", "Loss", "Grief"],
-  },
-  {
-    title: "The Mirror Doesn’t Work",
-    subtitle: "The Gaze We Inherited",
-    cover: "/covers/the-mirror-doesnt-work.png",
-    hero: "/heroes/the-mirror-doesnt-work-hero.png",
-    featured: true,
-    description: [
-      "The mirror shattered long ago, but its gaze remains.",
-      "A people escape the system that defined them only to recreate it themselves.",
-      "Freedom proves harder than rebellion.",
-    ],
-    thesis:
-      "What if the prison survives because we carry it with us?",
-    tags: ["Identity", "Race", "Power", "Inheritance"],
-  },
+  { title: "The Last Frequency", cover: null, hero: null, featured: false },
+  { title: "The Robbery", cover: null, hero: null, featured: false },
+  { title: "The Long Goodbye", cover: null, hero: null, featured: false },
+  { title: "The Mirror Doesn’t Work", cover: null, hero: null, featured: false },
+  { title: "Blackmail, Black Male", cover: null, hero: null, featured: false },
 ];
 
 const featuredNovellas = novellas.filter(
@@ -232,29 +89,15 @@ export default function Home() {
       setActiveHeroIndex((currentIndex) =>
         currentIndex === featuredNovellas.length - 1 ? 0 : currentIndex + 1,
       );
-    }, 7000);
+    }, 20000);
 
     return () => window.clearInterval(interval);
   }, [isPaused, rotationKey]);
 
   const activeHero = featuredNovellas[activeHeroIndex];
-  const visibleHeroStartIndex = Math.floor(activeHeroIndex / 5) * 5;
-  const visibleHeroIndexes = featuredNovellas
-    .map((_, index) => index)
-    .slice(visibleHeroStartIndex, visibleHeroStartIndex + 5);
 
   const goToHero = (index: number) => {
     setActiveHeroIndex(index);
-    setRotationKey((currentKey) => currentKey + 1);
-  };
-
-  const goToFirstHero = () => {
-    setActiveHeroIndex(0);
-    setRotationKey((currentKey) => currentKey + 1);
-  };
-
-  const goToLastHero = () => {
-    setActiveHeroIndex(featuredNovellas.length - 1);
     setRotationKey((currentKey) => currentKey + 1);
   };
 
@@ -443,14 +286,6 @@ export default function Home() {
 
                 <div className="flex shrink-0 items-center gap-1 text-[10px] uppercase tracking-[0.18em] text-[#d6ad45]">
                   <button
-                    onClick={goToFirstHero}
-                    aria-label="First featured novella"
-                    className="px-1 text-[#cdbf9f] transition hover:text-[#d6ad45]"
-                  >
-                    &lt;&lt;
-                  </button>
-
-                  <button
                     onClick={goToPreviousHero}
                     aria-label="Previous featured novella"
                     className="px-1 text-[#cdbf9f] transition hover:text-[#d6ad45]"
@@ -458,24 +293,20 @@ export default function Home() {
                     &lt;
                   </button>
 
-                  {visibleHeroIndexes.map((index) => {
-                    const novella = featuredNovellas[index];
-
-                    return (
-                      <button
-                        key={novella.title}
-                        onClick={() => goToHero(index)}
-                        aria-label={`Show ${novella.title}`}
-                        className={`px-2 py-1 transition ${
-                          index === activeHeroIndex
-                            ? "bg-[#d6ad45] text-black"
-                            : "text-[#cdbf9f] hover:text-[#d6ad45]"
-                        }`}
-                      >
-                        {index + 1}
-                      </button>
-                    );
-                  })}
+                  {featuredNovellas.map((novella, index) => (
+                    <button
+                      key={novella.title}
+                      onClick={() => goToHero(index)}
+                      aria-label={`Show ${novella.title}`}
+                      className={`px-2 py-1 transition ${
+                        index === activeHeroIndex
+                          ? "bg-[#d6ad45] text-black"
+                          : "text-[#cdbf9f] hover:text-[#d6ad45]"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
 
                   <button
                     onClick={goToNextHero}
@@ -483,14 +314,6 @@ export default function Home() {
                     className="px-1 text-[#cdbf9f] transition hover:text-[#d6ad45]"
                   >
                     &gt;
-                  </button>
-
-                  <button
-                    onClick={goToLastHero}
-                    aria-label="Last featured novella"
-                    className="px-1 text-[#cdbf9f] transition hover:text-[#d6ad45]"
-                  >
-                    &gt;&gt;
                   </button>
                 </div>
               </div>
