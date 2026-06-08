@@ -1,0 +1,241 @@
+THE COMMODIFIED SELF
+Project Handoff
+Date: June 2026
+
+AUTHOR
+-------
+Alphonse Damas
+
+PROJECT TYPE
+------------
+Anthology Website + Anthology Publishing Platform
+
+CORE CONCEPT
+------------
+The Commodified Self is an anthology of speculative novellas exploring what happens when human needs, identities, relationships, memories, beliefs, labor, and meaning become markets.
+
+Current long-term vision:
+- Anthology website
+- Individual novella pages
+- Publishing imprint
+- Potential future multi-author platform
+
+--------------------------------------------------
+PHASE 1
+FOUNDATION
+--------------------------------------------------
+
+Completed.
+
+Repository:
+thecommodifiedself
+
+Tag:
+anthology-v1-freeze
+
+Accomplishments:
+- Initial homepage
+- Anthology branding
+- Gold-on-black visual identity
+- Hero carousel concept
+- Left navigation
+- Market/theme taxonomy
+
+--------------------------------------------------
+PHASE 2
+CATALOG EXPANSION
+--------------------------------------------------
+
+Completed.
+
+Tag:
+anthology-v2-catalog-expansion
+
+Latest commit:
+aa26cb1
+
+Accomplishments:
+- Hero carousel operational
+- Cover wall operational
+- Featured novella rotation
+- Hero pagination
+- Cover integration
+- Theme tags
+- Thesis statements
+
+Current Novellas
+----------------
+
+The Other Half
+The Number
+The Chrysalis
+When Gods Stay Quiet
+The Vanishing Variable
+Blackmail, Black Male
+Who Cleans Galt's Toilets?
+Proxy
+The Last Frequency
+The Robbery
+The Long Goodbye
+The Mirror Doesn't Work
+In the Public Interest
+The Second Burning
+
+Total:
+14 novellas
+
+Assets Integrated
+-----------------
+
+Covers:
+public/covers/
+
+Heroes:
+public/heroes/
+
+--------------------------------------------------
+CURRENT STATE
+--------------------------------------------------
+
+Homepage contains:
+
+- Hero carousel
+- Sidebar navigation
+- Cover wall
+- Footer
+
+Hero count:
+14
+
+Catalog count:
+14
+
+Current file:
+src/app/page.tsx
+
+Repository state:
+Committed
+Pushed
+Tagged
+
+--------------------------------------------------
+DESIGN OBSERVATIONS
+--------------------------------------------------
+
+Hero section works.
+
+Cover wall works.
+
+Gold-on-black identity works.
+
+Current issue:
+Homepage is becoming crowded.
+
+The site now feels like a publishing imprint rather than a personal portfolio.
+
+--------------------------------------------------
+APPROVED NEXT DIRECTION
+--------------------------------------------------
+
+Phase 3
+
+Priority Order:
+
+1. Create /worlds page
+2. Create /worlds/[slug] page
+3. Wire ENTER THIS WORLD button
+4. Move full catalog to /worlds
+5. Simplify homepage
+6. Add anthology thesis section
+7. Add related worlds
+8. Add author/anthologist section
+
+--------------------------------------------------
+TARGET ROUTES
+--------------------------------------------------
+
+/
+
+Homepage
+
+/worlds
+
+Full catalog
+
+/worlds/the-chrysalis
+
+/worlds/the-number
+
+/worlds/proxy
+
+/worlds/the-second-burning
+
+etc.
+
+--------------------------------------------------
+WORLD PAGE TEMPLATE
+--------------------------------------------------
+
+Hero
+
+Title
+
+Subtitle
+
+Themes
+
+Synopsis
+
+The Question
+
+Related Worlds
+
+Footer
+
+--------------------------------------------------
+LONG TERM VISION
+--------------------------------------------------
+
+Phase 4
+- Anthology thesis pages
+- Search
+- Filtering
+
+Phase 5
+- Reader accounts
+- Reading excerpts
+- Mailing list
+
+Phase 6
+- Publishing imprint
+- Multiple authors
+- Shared anthology universe
+
+--------------------------------------------------
+GIT MILESTONES
+--------------------------------------------------
+
+anthology-v1-freeze
+
+anthology-v2-catalog-expansion
+
+--------------------------------------------------
+IMPORTANT
+--------------------------------------------------
+
+Do NOT redesign visual identity.
+
+Maintain:
+
+- black background
+- gold accents
+- serif typography
+- publishing imprint aesthetic
+
+Focus on:
+- architecture
+- navigation
+- discoverability
+- anthology world-building
+
+NOT on visual redesign.

@@ -1,0 +1,25 @@
+export const worldEssays = {
+  "the-second-burning": [
+  "The first fire was honest. That was its weakness. It arrived with sirens, kerosene, uniforms, and flame. It announced its hatred of books openly enough for history to recognize the villain. The Second Burning begins with the more frightening possibility: that the next fire would not need to burn anything at all.",
+  "This world begins where another famous warning ended. The books survived. The firemen were defeated. Montag’s act became monument, hymn, curriculum, and civic identity. Civilization rebuilt itself around preservation, and for a while the victory looked complete.",
+  "But survival is not understanding. A book can remain intact while the reader disappears. An archive can grow larger while the habits required to navigate it grow smaller. A civilization can preserve every answer and still lose the capacity to ask properly.",
+  "Liora Venn enters the Great Archive as a child in a society trained to be grateful. She is given a candle she is forbidden to light, a perfect symbol for the civilization she inherits: reverence without danger, memory without combustion, fire domesticated into ritual.",
+  "The Archive does not appear oppressive. That is what makes it dangerous. Its restrictions are reasonable. Some ideas require context. Some books are dangerous without preparation. Expertise matters. Sequence matters. The Curators are not villains; they are competent people solving real problems.",
+  "The First Catalog is necessary and therefore morally complicated. Every curriculum is an exclusion machine. Every pathway through knowledge says read this first, that later, this often, that rarely. The Second Burning is born not when people classify knowledge, but when future generations forget that classification was a human act.",
+  "The Keepers of Relevance deepen the wound. When information exceeds attention, attention becomes the scarce resource. Books can be stored. Attention must be cultivated anew in every generation. Instead, the world responds with relevance systems, rankings, pathways, and summaries.",
+  "The Harmonists arrive with the promise of peace. Disagreement injures. Conflicting texts destabilize public life. Schools begin teaching conclusions without the conflicts that produced them. A calmer world emerges, but a conclusion inherited without conflict is not understanding.",
+  "Then comes the Compassionate Age, where comfort becomes a moral framework. Difficult texts receive warnings. Atrocities are softened. Historical complexity is contextualized until it no longer cuts. The world becomes kinder and less resilient.",
+  "The Delegation completes the process. Artificial systems summarize everything. Citizens celebrate liberation from overload, and who can blame them? But the system’s mercy becomes dependency. The Summarizers do not burn the Archive. They make direct encounter feel unnecessary.",
+  "This is the second fire: not censorship, but successful convenience. Not destruction, but disuse. Not silence, but answers supplied so quickly that questions lose their discipline. The first fire feared ideas. The second fire pities the effort required to engage them.",
+  "The novella belongs in The Commodified Self because it imagines understanding as a market commodity. Complexity becomes a service problem. Interpretation becomes outsourced labor. Judgment becomes a premium feature.",
+  "The world’s pressure point arrives when the systems fail and the Archive remains. Every book is still there. Every answer exists. Nothing has been destroyed. Yet the people stand before their own preserved inheritance as strangers.",
+  "Liora’s role is not to hate the Archive, the Curators, or the systems that made knowledge accessible. Her task is subtler. She must recover the burden of understanding. Complexity is not a flaw in civilization. It is the price of participating in one.",
+  "The world’s reversal is elegant: the books are safest precisely when the reader is most endangered. The shelves remain. The danger has moved from the object to the habit. The book is no longer burned, banned, or buried. It is preserved so completely that no one feels compelled to open it.",
+  "The contradiction is equally devastating. The society built to prevent censorship gradually produces people who censor themselves through convenience, comfort, and incapacity. No tyrant needs to forbid a difficult book when no one has the stamina to read it.",
+  "The Second Burning is not an anti-technology story in any simple sense. Tools that summarize, curate, soften, and organize knowledge can be humane. But when they replace rather than prepare direct engagement, they do the fire’s work without its smoke.",
+  "In the end, dawn comes not because the Archive survives. It had always survived. Dawn comes because a reader sits down before the burden and chooses not to flee.",
+  "The books had survived the fire. The question was whether the readers could survive its absence. Knowledge does not need to be destroyed to be lost. It only needs to become unnecessary."
+]
+} as const;
+
+export type WorldEssaySlug = keyof typeof worldEssays;
