@@ -115,7 +115,7 @@ export const worlds: World[] = [
     cover: "/covers/blackmail-black-male.png",
     hero: "/heroes/blackmail-black-male-hero.png",
     featured: true,
-    market: "Systems",
+    market: "Minds",
     description: [
       "Safety is never free when fear becomes a market.",
       "A Black man discovers survival has a price.",

@@ -210,7 +210,7 @@ export default async function IdeaPage({ params }: IdeaPageProps) {
                 <Link key={world.slug} href={`/worlds/${world.slug}`} className="group overflow-hidden border border-[#8f6f2a]/60 bg-[#0b0b0b] transition hover:border-[#d6ad45]/70">
                   <div className="relative aspect-[2/3] overflow-hidden bg-[#111]">
                     {world.cover && (
-                      <Image src={world.cover} alt={`${world.title} cover`} fill sizes="(max-width: 768px) 50vw, 18vw" className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
+                      <Image src={world.cover} alt={`${world.title} cover`} fill quality={100} sizes="(max-width: 768px) 50vw, 18vw" className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
                     )}
                   </div>
                   <div className="border-t border-[#8f6f2a]/40 px-4 py-4">

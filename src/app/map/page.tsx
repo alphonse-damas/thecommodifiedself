@@ -147,7 +147,7 @@ export default function MapPage() {
                       <Link key={world.slug} href={`/worlds/${world.slug}`} className="group grid grid-cols-[92px_minmax(0,1fr)] gap-4 border border-[#8f6f2a]/50 bg-[#050505] p-3 transition hover:border-[#d6ad45]/70">
                         <div className="relative aspect-[2/3] overflow-hidden bg-[#111]">
                           {world.cover && (
-                            <Image src={world.cover} alt={`${world.title} cover`} fill sizes="92px" className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
+                            <Image src={world.cover} alt={`${world.title} cover`} fill quality={100} sizes="92px" className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
                           )}
                         </div>
                         <div className="flex min-w-0 flex-col justify-center">

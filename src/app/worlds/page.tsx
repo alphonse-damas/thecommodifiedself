@@ -126,6 +126,7 @@ export default function WorldsPage() {
                         src={world.cover}
                         alt={`${world.title} cover`}
                         fill
+                        quality={100}
                         sizes="(max-width: 768px) 50vw, 14vw"
                         className="object-cover transition duration-500 group-hover:scale-105 group-hover:opacity-80"
                         unoptimized

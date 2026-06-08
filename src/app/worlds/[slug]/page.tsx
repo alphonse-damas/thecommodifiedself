@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getWorldDetail } from "@/content/worldDetails";
-import { getWorldEssay, getWorldRelationship } from "@/content/worldEssays";
+import { getWorldConnections, getWorldEssay, getWorldRelationship } from "@/content/worldEssays";
 import { getIdeaByName, type Idea } from "@/lib/ideas";
 import { getMarketForWorld } from "@/lib/markets";
 import { getRelatedWorlds, getWorldBySlug, worlds } from "@/lib/worlds";
@@ -21,7 +21,11 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
 
   const detail = getWorldDetail(world.slug);
   const worldEssay = getWorldEssay(world.slug);
-  const relatedWorlds = getRelatedWorlds(world.slug, 3);
+  const atlasConnections = getWorldConnections(world.slug);
+  const relatedWorldsFromAtlas = atlasConnections
+    .map((connection) => getWorldBySlug(connection.slug))
+    .filter((relatedWorld): relatedWorld is NonNullable<ReturnType<typeof getWorldBySlug>> => Boolean(relatedWorld));
+  const relatedWorlds = relatedWorldsFromAtlas.length > 0 ? relatedWorldsFromAtlas.slice(0, 3) : getRelatedWorlds(world.slug, 3);
   const market = getMarketForWorld(world);
   const atlasIdeas = world.ideas
     .map((ideaName) => getIdeaByName(ideaName))
@@ -54,6 +58,7 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
               alt={`${world.title} hero artwork`}
               fill
               priority
+              quality={100}
               sizes="100vw"
               className="object-cover object-left"
               unoptimized
@@ -215,8 +220,15 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
           <p className="mt-5 text-sm leading-7 text-[#d8ccb2]">
             {detail?.excerptNote ?? "This world will eventually include a first excerpt or opening chapter preview."}
           </p>
+          {detail?.excerptText?.length ? (
+            <div className="mt-5 space-y-3 border-t border-[#8f6f2a]/30 pt-5 text-sm leading-7 text-[#d8ccb2]">
+              {detail.excerptText.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          ) : null}
           <button className="mt-6 cursor-not-allowed border border-[#8f6f2a] px-5 py-2.5 text-[10px] uppercase tracking-[0.22em] text-[#9f8f70]">
-            Coming Soon
+            {detail?.excerptStatus === "available" ? "Preview Only" : "Coming Soon"}
           </button>
         </article>
 
@@ -258,6 +270,7 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
                         src={relatedWorld.cover}
                         alt={`${relatedWorld.title} cover`}
                         fill
+                        quality={100}
                         sizes="88px"
                         className="object-cover transition duration-500 group-hover:scale-105"
                         unoptimized

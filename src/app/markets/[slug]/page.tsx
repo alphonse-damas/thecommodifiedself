@@ -80,7 +80,7 @@ export default async function MarketPage({ params }: { params: Promise<{ slug: s
               <Link key={world.slug} href={`/worlds/${world.slug}`} className="group overflow-hidden border border-[#8f6f2a]/60 bg-[#0b0b0b]">
                 {world.cover && (
                   <div className="relative aspect-[2/3] overflow-hidden">
-                    <Image src={world.cover} alt={`${world.title} cover`} fill sizes="(max-width: 768px) 50vw, 16vw" className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
+                    <Image src={world.cover} alt={`${world.title} cover`} fill quality={100} sizes="(max-width: 768px) 50vw, 16vw" className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
                   </div>
                 )}
                 <div className="border-t border-[#8f6f2a]/40 p-3">

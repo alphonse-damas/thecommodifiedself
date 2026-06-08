@@ -143,6 +143,7 @@ export default function Home() {
                 alt={`${activeHero.title} hero artwork`}
                 fill
                 priority
+                quality={100}
                 sizes="100vw"
                 className="object-cover object-left"
                 unoptimized
@@ -217,7 +218,7 @@ export default function Home() {
                 <Link key={world.title} href={`/worlds/${world.slug}`} className="group overflow-hidden border border-[#8f6f2a]/60 bg-[#0b0b0b]">
                   {world.cover && (
                     <div className="relative aspect-[2/3] overflow-hidden">
-                      <Image src={world.cover} alt={`${world.title} cover`} fill sizes="(max-width: 768px) 50vw, 14vw" className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
+                      <Image src={world.cover} alt={`${world.title} cover`} fill quality={100} sizes="(max-width: 768px) 50vw, 14vw" className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
                     </div>
                   )}
                 </Link>
