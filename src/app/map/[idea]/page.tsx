@@ -1,7 +1,7 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getIdeaEssayBySlug } from "@/content/ideaEssays";
+import { getIdeaEssayBySlug } from "@/content/idea-essays";
 import AtlasCompass from "@/components/AtlasCompass";
 import {
   getIdeaBySlug,
@@ -91,11 +91,11 @@ export default async function IdeaPage({ params }: IdeaPageProps) {
             <p className="text-xs uppercase tracking-[0.3em] text-[#d6ad45]">Architecture</p>
             <div className="mt-4 space-y-2 text-xs uppercase tracking-[0.18em] text-[#d8ccb2]">
               <Link href="/thesis" className="block transition hover:text-[#d6ad45]">Thesis</Link>
-              <p className="text-[#d6ad45]">↓</p>
+              <p className="text-[#d6ad45]">â†“</p>
               <Link href="/map" className="block transition hover:text-[#d6ad45]">Atlas</Link>
-              <p className="text-[#d6ad45]">↓</p>
+              <p className="text-[#d6ad45]">â†“</p>
               <p className="text-[#d6ad45]">Ideas</p>
-              <p className="text-[#d6ad45]">↓</p>
+              <p className="text-[#d6ad45]">â†“</p>
               <Link href="/worlds" className="block transition hover:text-[#d6ad45]">Worlds</Link>
             </div>
           </div>
@@ -128,7 +128,7 @@ export default async function IdeaPage({ params }: IdeaPageProps) {
               <details className="group mt-7 border-t border-[#8f6f2a]/30 pt-6" open>
                 <summary className="cursor-pointer list-none text-[10px] uppercase tracking-[0.25em] text-[#d6ad45] transition hover:text-[#f4ead7]">
                   <span className="group-open:hidden">Read Essay +</span>
-                  <span className="hidden group-open:inline">Hide Essay −</span>
+                  <span className="hidden group-open:inline">Hide Essay âˆ’</span>
                 </summary>
                 <div className="mt-6 max-w-4xl space-y-4 text-sm leading-8 text-[#d8ccb2]">
                   {essay.paragraphs.map((paragraph) => (
@@ -153,14 +153,14 @@ export default async function IdeaPage({ params }: IdeaPageProps) {
                 <h3 className="mt-3 font-serif text-4xl font-light">Where {idea.name} leads</h3>
               </div>
               <Link href="/map" className="text-[10px] uppercase tracking-[0.25em] text-[#d6ad45] hover:text-[#f4ead7]">
-                Back to Atlas →
+                Back to Atlas â†’
               </Link>
             </div>
 
             <div className="mt-7 grid gap-4 md:grid-cols-3">
               {relatedIdeaLinks.map(({ idea: relatedIdea, note }) => (
                 <Link key={relatedIdea.slug} href={`/map/${relatedIdea.slug}`} className="group border border-[#8f6f2a]/40 bg-[#050505] px-5 py-5 transition hover:border-[#d6ad45]/70">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#d6ad45]">{idea.name} → {relatedIdea.name}</p>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#d6ad45]">{idea.name} â†’ {relatedIdea.name}</p>
                   <h4 className="mt-4 font-serif text-2xl leading-tight group-hover:text-[#d6ad45]">{relatedIdea.question}</h4>
                   <p className="mt-4 text-xs leading-6 text-[#d8ccb2]">{note}</p>
                 </Link>
@@ -175,7 +175,7 @@ export default async function IdeaPage({ params }: IdeaPageProps) {
                 <h3 className="mt-3 font-serif text-4xl font-light">Where {idea.name} appears</h3>
               </div>
               <Link href="/markets" className="text-[10px] uppercase tracking-[0.25em] text-[#d6ad45] hover:text-[#f4ead7]">
-                View markets →
+                View markets â†’
               </Link>
             </div>
 
@@ -201,7 +201,7 @@ export default async function IdeaPage({ params }: IdeaPageProps) {
                 <h3 className="mt-3 font-serif text-4xl font-light">Stories that carry this idea</h3>
               </div>
               <Link href="/worlds" className="text-[10px] uppercase tracking-[0.25em] text-[#d6ad45] hover:text-[#f4ead7]">
-                View all worlds →
+                View all worlds â†’
               </Link>
             </div>
 
@@ -240,7 +240,7 @@ export default async function IdeaPage({ params }: IdeaPageProps) {
 
       <footer className="border-t border-[#8f6f2a]/30 px-6 py-7 text-[10px] text-[#9f8f70]">
         <div className="flex w-full justify-between">
-          <p>© 2026 The Commodified Self Press</p>
+          <p>Â© 2026 The Commodified Self Press</p>
           <p>Alphonse Damas</p>
         </div>
       </footer>

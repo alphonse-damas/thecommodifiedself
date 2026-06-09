@@ -1,8 +1,8 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getWorldDetail } from "@/content/worldDetails";
-import { getWorldConnections, getWorldEssay, getWorldRelationship } from "@/content/worldEssays";
+import { getWorldDetail } from "@/content/world-details";
+import { getWorldConnections, getWorldEssay, getWorldRelationship } from "@/content/world-essays";
 import { getIdeaByName, type Idea } from "@/lib/ideas";
 import { getMarketForWorld } from "@/lib/markets";
 import { getRelatedWorlds, getWorldBySlug, worlds } from "@/lib/worlds";
@@ -293,7 +293,7 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
 
       <footer className="border-t border-[#8f6f2a]/30 px-6 py-7 text-[10px] text-[#9f8f70]">
         <div className="flex w-full justify-between">
-          <p>© 2026 The Commodified Self Press</p>
+          <p>Â© 2026 The Commodified Self Press</p>
           <p>Alphonse Damas</p>
         </div>
       </footer>

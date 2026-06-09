@@ -1,9 +1,9 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { themes, worlds } from "@/lib/worlds";
 import { marketNav } from "@/lib/markets";
 import { ideas, getWorldsByIdea } from "@/lib/ideas";
-import { getWorldDetail } from "@/content/worldDetails";
+import { getWorldDetail } from "@/content/world-details";
 
 const atlasIdeaNames = new Set(ideas.map((idea) => idea.name));
 
@@ -174,3 +174,4 @@ export default function WorldsPage() {
     </main>
   );
 }
+
