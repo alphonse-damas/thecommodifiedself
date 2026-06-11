@@ -1,0 +1,17 @@
+#To compress and archive folders/files
+Compress-Archive -Path .\src, .\package.json, .\tsconfig.json, .\next.config.ts -DestinationPath .\thecommodifiedself-architecture.zip -Force
+
+Compress-Archive -Path .\src -DestinationPath .\thecommodifiedself-src.zip  -Force
+
+# to run *.ps1 command to create *.ts files
+powershell -ExecutionPolicy Bypass -File merge-docx.ps1
+
+# This line is a comment in *.ps1 file
+
+
+# How to run ps1 code to create prologue *.ts files
+ .\scripts\generate-prologues.ps1
+
+
+Rewrite the selected text to improve its structure and readability. Group related ideas under clear headings, use lists or paragraph breaks where they aid comprehension, and polish the wording for clarity and flow.
+Also, recommend a subtitle for the prologue

@@ -1,77 +1,42 @@
 ﻿export const proxy_prologue = {
   slug: "proxy",
   title: "Proxy",
+  previewStart: 0,
+  previewLength: 3,
+  previewCharacters: 780,
   paragraphs: [
-    `Prologue
-In many ways, humanity's greatest talent has never been invention.
-It has been acclimation.
-We acclimate to noise until silence becomes frightening.
-We acclimate to spectacle until sincerity feels underproduced.
-We acclimate to loneliness until even the memory of tenderness begins to embarrass us.
-And so it was with Proxy.
-The historians, such as they were by then, would later argue endlessly about when exactly the fracture began. Some pointed to dating applications and the reduction of courtship into sortable metadata. Others blamed the algorithmic economy itself, which slowly transformed human beings into competing brands struggling for visibility inside systems optimized not for connection, but engagement.
-But this, I think, gives technology too much poetry.
-The truth is less cinematic.
-People were lonely long before the machines arrived.
-The machines merely discovered how to monetize the wound.
-At first, neural streaming seemed harmless enough. Athletes sold acceleration. Musicians sold performance euphoria. Travelers sold wonder. There was even, briefly, a scandal involving a Nobel Prize-winning physicist whose subscribers paid extraordinary sums to experience the sensation of solving equations beyond their comprehension. Humanity, having exhausted nearly every external resource on Earth, had finally turned inward and begun strip-mining consciousness itself.
-But emotional economies, like all economies, naturally drift toward scarcity.
-And there existed no scarcity greater than desire.
-Not sex. Desire.
-One must understand the distinction.
-Sex had long ago become abundant, digitized, optimized, and anesthetized into mechanical accessibility. Desire, however"”genuine reciprocal longing"”remained stubbornly unequal. Unevenly distributed. Hoarded by fate with a cruelty modern society preferred not to discuss aloud.
-Some individuals moved through life sheathed in invisible permission. Rooms softened around them. Conversations opened effortlessly. Affection approached them voluntarily. They inspired anticipation merely by arriving somewhere.
-Others experienced the opposite condition.
-A kind of social translucence.
-They spoke and were interrupted.
-Reached and were avoided.
-Desired and were not returned.
-Most suffered this quietly.
-Civilization depends heavily upon silent humiliations.
-Proxy changed this arrangement forever.
-Not because it simulated intimacy.
-But because it permitted millions to experience, however briefly, the emotional architecture of being wanted.
-The distinction proved catastrophic.
-For the first time in recorded history, an unseen man could close his eyes and feel:
-"¢	a woman leaning closer,
-"¢	laughter arriving warmly,
-"¢	touch without negotiation,
-"¢	affection without suspicion,
-"¢	desire without performance.
-Not imagined.
-Felt.
-The nervous system, tragically democratic in its chemistry, made little distinction between earned memory and borrowed sensation.
-This became the true product.
-Not eroticism.
-Relief.
-The relief of temporarily escaping oneself.
-The relief of discovering that somewhere in the universe, human interaction could unfold without defensive exhaustion.
-Proxy executives, in their shareholder briefings and ethical review panels, often described the platform as an empathy technology. This was technically accurate in the same way morphine might be described as a sleep aid.
-The company's internal research revealed something quietly devastating about the species:
-most subscribers did not become emotionally attached during sexual encounters.
-They became attached several moments earlier.
-During eye contact.
-During laughter.
-During the brief and almost sacred experience of another person appearing genuinely pleased by their existence.
-That was the hook.
-That was always the hook.
-And perhaps this is the cruelest irony of the entire age:
-humanity crossed unimaginable technological thresholds not in pursuit of wisdom, transcendence, or collective flourishing"”
-but in pursuit of a feeling many people once received freely in ordinary life.
-To be chosen.
-To be welcomed.
-To feel, if only for an evening, exempt from invisibility.
-Of course, every civilization eventually resembles the thing it compensates for.
-And ours, compensating endlessly for alienation, slowly transformed intimacy itself into infrastructure.
-The desirable became economic engines.
-The lonely became recurring revenue.
-Between them stood Proxy:
-that vast shimmering cathedral of secondhand longing.
-By the time Lucien Vale entered Avalon Midtown on a rainy Thursday evening in October, more than six million people were already waiting to feel what it was like to be him.`
+    `Prologue`,
+    `The Price of Being Wanted`,
+    `Acclimation`,
+    `Humanity's greatest talent has never been invention. It has been acclimation. We acclimate to noise until silence becomes frightening, to spectacle until sincerity feels underproduced, and to loneliness until even the memory of tenderness begins to embarrass us. And so it was with Proxy.`,
+    `The Fracture`,
+    `The historians, such as they were by then, would later argue endlessly about when the fracture began. Some pointed to dating applications and the reduction of courtship into sortable metadata. Others blamed the algorithmic economy, which slowly transformed human beings into competing brands struggling for visibility inside systems optimized not for connection, but engagement.`,
+    `But that gives technology too much poetry. The truth is less cinematic: people were lonely long before the machines arrived. The machines merely discovered how to monetize the wound.`,
+    `The Market for Longing`,
+    `At first, neural streaming seemed harmless enough. Athletes sold acceleration. Musicians sold performance euphoria. Travelers sold wonder. Briefly, there was even a scandal involving a Nobel Prize-winning physicist whose subscribers paid extraordinary sums to experience the sensation of solving equations beyond their comprehension. Humanity, having exhausted nearly every external resource on Earth, had finally turned inward and begun strip-mining consciousness itself.`,
+    `But emotional economies, like all economies, drift toward scarcity. And there is no scarcity greater than desire. Not sex—desire. The distinction matters.`,
+    `Sex had long since become abundant, digitized, optimized, and anesthetized into mechanical accessibility. Desire, however—genuine, reciprocal longing—remained stubbornly unequal: unevenly distributed and hoarded by fate with a cruelty modern society preferred not to discuss aloud.`,
+    `Some people moved through life sheathed in invisible permission. Rooms softened around them. Conversations opened effortlessly. Affection approached them voluntarily. They inspired anticipation simply by arriving somewhere.`,
+    `Others experienced the opposite condition: a kind of social translucence. They spoke and were interrupted, reached and were avoided, desired and were not desired in return. Most suffered this quietly. Civilization depends heavily upon silent humiliations.`,
+    `What Proxy Changed`,
+    `Proxy changed this arrangement forever—not because it simulated intimacy, but because it permitted millions to experience, however briefly, the emotional architecture of being wanted. That distinction proved catastrophic.`,
+    `For the first time in recorded history, an unseen man could close his eyes and feel the following:`,
+    `•	a woman leaning closer`,
+    `•	laughter arriving warmly`,
+    `•	touch without negotiation`,
+    `•	affection without suspicion`,
+    `•	desire without performance`,
+    `Not imagined. Felt. The nervous system, tragically democratic in its chemistry, made little distinction between earned memory and borrowed sensation.`,
+    `This became the true product: not eroticism, but relief—the relief of temporarily escaping oneself, and the relief of discovering that somewhere in the universe, human interaction could unfold without defensive exhaustion.`,
+    `Proxy executives, in shareholder briefings and ethical review panels, often described the platform as an empathy technology. This was technically accurate in much the same way morphine might be described as a sleep aid.`,
+    `The company's internal research revealed something quietly devastating about the species: most subscribers did not become emotionally attached during sexual encounters. They became attached several moments earlier—during eye contact, during laughter, during the brief and almost sacred experience of another person appearing genuinely pleased by their existence.`,
+    `That was the hook. That was always the hook.`,
+    `Perhaps this was the cruelest irony of the age: humanity crossed unimaginable technological thresholds not in pursuit of wisdom, transcendence, or collective flourishing. It pursued a feeling many people had once received freely in ordinary life:`,
+    `To be chosen. To be welcomed. To feel, if only for an evening, exempt from invisibility.`,
+    `The Age of Proxy`,
+    `Of course, every civilization eventually resembles the thing it compensates for. And ours, compensating endlessly for alienation, slowly transformed intimacy itself into infrastructure.`,
+    `The desirable became economic engines. The lonely became recurring revenue.`,
+    `Between them stood Proxy: a vast, shimmering cathedral of secondhand longing.`,
+    `By the time Lucien Vale entered Avalon Midtown on a rainy Thursday evening in October, more than six million people were already waiting to feel what it was like to be him.`
   ],
 };
-
-
-
-
-

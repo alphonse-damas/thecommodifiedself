@@ -1,6 +1,8 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ExpandableText from "@/components/ExpandableText";
+import { getPrologue } from "@/content/prologues";
 import { getWorldDetail } from "@/content/world-details";
 import { getWorldConnections, getWorldEssay, getWorldRelationship } from "@/content/world-essays";
 import { getIdeaByName, type Idea } from "@/lib/ideas";
@@ -21,6 +23,7 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
 
   const detail = getWorldDetail(world.slug);
   const worldEssay = getWorldEssay(world.slug);
+  const prologue = getPrologue(world.slug);
   const atlasConnections = getWorldConnections(world.slug);
   const relatedWorldsFromAtlas = atlasConnections
     .map((connection) => getWorldBySlug(connection.slug))
@@ -30,6 +33,15 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
   const atlasIdeas = world.ideas
     .map((ideaName) => getIdeaByName(ideaName))
     .filter((idea): idea is Idea => Boolean(idea));
+
+  const prologueParagraphs = prologue?.paragraphs ?? detail?.excerptText ?? [];
+  const prologuePreviewStart = prologue?.previewStart ?? 0;
+  const prologuePreviewLength = prologue?.previewLength ?? 3;
+  const prologuePreviewCharacters = prologue?.previewCharacters ?? 780;
+  const hasPrologueHeading = prologueParagraphs[0]?.toLowerCase().startsWith("prologue");
+  const prologueHeading = hasPrologueHeading ? prologueParagraphs[0] : null;
+  const prologueSubtitle = hasPrologueHeading ? prologueParagraphs[1] : null;
+  const prologueReadingParagraphs = hasPrologueHeading ? prologueParagraphs.slice(2) : prologueParagraphs;
 
   return (
     <main className="min-h-screen w-full overflow-x-hidden bg-[#050505] text-[#f4ead7]">
@@ -113,11 +125,22 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
         <article className="rounded-lg border border-[#8f6f2a]/40 bg-gradient-to-br from-[#111] to-[#050505] px-8 py-7">
           <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">World Synopsis</p>
           <h2 className="mt-3 font-serif text-3xl font-light">The story inside the world.</h2>
-          <div className="mt-5 space-y-4 text-sm leading-7 text-[#d8ccb2]">
-            {(detail?.synopsis ?? world.description).map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
+          <ExpandableText
+            paragraphs={detail?.synopsis ?? world.description}
+            initialCount={4}
+            className="mt-5 text-sm leading-7 text-[#d8ccb2]"
+            contentClassName="mt-6"
+            paragraphClassName=""
+            expandLabel="Continue Reading"
+            collapseLabel="Collapse Synopsis"
+            controlsPosition="top"
+            controlsClassName="mb-0"
+            scrollWhenExpanded="auto"
+            expandedMaxHeight="52vh"
+            scrollParagraphThreshold={6}
+            scrollCharacterThreshold={1200}
+            pinnedContent={<div key="world-synopsis-pinned-divider" className="mt-7 border-t border-[#8f6f2a]/30" />}
+          />
         </article>
 
         <article className="rounded-lg border border-[#8f6f2a]/40 bg-gradient-to-br from-[#111] to-[#050505] px-8 py-7">
@@ -131,39 +154,107 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
         </article>
       </section>
 
-      <section className="px-6 pb-5">
-        <article className="rounded-lg border border-[#8f6f2a]/40 bg-gradient-to-br from-[#111] to-[#050505] px-8 py-7">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">World Essay</p>
-              <h2 className="mt-3 font-serif text-3xl font-light">{worldEssay?.title ?? world.title}</h2>
-              <p className="mt-3 max-w-4xl font-serif text-xl italic leading-snug text-[#f4ead7]">
-                {worldEssay?.subtitle ?? "The story becomes an argument inside the anthology."}
+      <section className="grid w-full gap-5 px-6 pb-5 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+        <article className="rounded-lg border border-[#8f6f2a]/40 bg-gradient-to-br from-[#111] to-[#050505] px-8 py-8">
+          <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">Opening Pages</p>
+          <h2 className="mt-3 font-serif text-3xl font-light">{prologue?.title ?? detail?.excerptLabel ?? "Opening pages coming soon"}</h2>
+          <p className="mt-4 max-w-[42rem] text-sm leading-7 text-[#cdbf9f]">
+            The prologue is the public threshold into this world. Begin here.
+          </p>
+
+          {prologueReadingParagraphs.length ? (
+            <ExpandableText
+              paragraphs={prologueReadingParagraphs}
+              initialCount={prologuePreviewLength}
+              initialCharacters={prologuePreviewCharacters}
+              previewStart={prologuePreviewStart}
+              className="mt-5 w-full max-w-none text-[15px] leading-8 text-[#d8ccb2]"
+              contentClassName="mt-6"
+              paragraphClassName="w-full max-w-none"
+              expandLabel="Continue Reading"
+              collapseLabel="Collapse Prologue"
+              controlsPosition="top"
+              controlsClassName="mb-0"
+              scrollWhenExpanded
+              expandedMaxHeight="70vh"
+              pinnedContent={
+                prologueHeading ? (
+                  <div key="prologue-pinned-heading" className="mt-7 border-t border-[#8f6f2a]/30 pt-6">
+                    <p key="prologue-heading" className="text-sm leading-7 text-[#d8ccb2]">{prologueHeading}</p>
+                    {prologueSubtitle ? (
+                      <p key="prologue-subtitle" className="mt-5 text-sm leading-7 text-[#d8ccb2]">{prologueSubtitle}</p>
+                    ) : null}
+                  </div>
+                ) : (
+                  <div key="prologue-pinned-divider" className="mt-7 border-t border-[#8f6f2a]/30" />
+                )
+              }
+            />
+          ) : (
+            <div className="mt-7 border-t border-[#8f6f2a]/30 pt-6">
+              <p className="w-full max-w-none text-sm leading-7 text-[#d8ccb2]">
+                {detail?.excerptNote ?? "This world will eventually include a prologue preview."}
               </p>
             </div>
+          )}
+        </article>
+
+        <article className="rounded-lg border border-[#8f6f2a]/40 bg-gradient-to-br from-[#111] to-[#050505] px-8 py-8">
+          <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">Atlas Companion</p>
+          <h2 className="mt-3 font-serif text-3xl font-light">The deeper reading layer.</h2>
+          <p className="mt-5 text-sm leading-7 text-[#d8ccb2]">
+            Beyond the story lies the argument.
+          </p>
+          <p className="mt-5 max-w-[42rem] text-sm leading-7 text-[#cdbf9f]">
+            The Atlas Companion explores the ideas, contradictions, reflections, and debates surrounding each world.
+          </p>
+
+          <div className="mt-7 grid gap-3 text-xs leading-6 text-[#cdbf9f] sm:grid-cols-2">
+            <div className="border border-[#8f6f2a]/40 bg-[#090909] px-4 py-3">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-[#d6ad45]">Included</p>
+              <p className="mt-2 font-serif text-lg text-[#f4ead7]">World Essay</p>
+              <p className="mt-1 text-[#9f8f70]">The world as an argument inside the anthology.</p>
+            </div>
+            <div className="border border-[#8f6f2a]/40 bg-[#090909] px-4 py-3">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-[#d6ad45]">Included</p>
+              <p className="mt-2 font-serif text-lg text-[#f4ead7]">Critical Analysis</p>
+              <p className="mt-1 text-[#9f8f70]">How the novella succeeds, strains, and complicates its own premise.</p>
+            </div>
+            <div className="border border-[#8f6f2a]/40 bg-[#090909] px-4 py-3">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-[#d6ad45]">Included</p>
+              <p className="mt-2 font-serif text-lg text-[#f4ead7]">Author Reflection</p>
+              <p className="mt-1 text-[#9f8f70]">Why this story was written.</p>
+            </div>
+            <div className="border border-[#8f6f2a]/40 bg-[#090909] px-4 py-3">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-[#d6ad45]">Included</p>
+              <p className="mt-2 font-serif text-lg text-[#f4ead7]">Contrarian Perspective</p>
+              <p className="mt-1 text-[#9f8f70]">Where the world argues with itself.</p>
+            </div>
+            <div className="border border-[#8f6f2a]/40 bg-[#090909] px-4 py-3">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-[#d6ad45]">Included</p>
+              <p className="mt-2 font-serif text-lg text-[#f4ead7]">Academic Questions</p>
+              <p className="mt-1 text-[#9f8f70]">Prompts for deeper study and discussion.</p>
+            </div>
           </div>
-          <div className="mt-6 space-y-4 border-t border-[#8f6f2a]/40 pt-6 text-sm leading-7 text-[#d8ccb2]">
-            {(worldEssay?.paragraphs ?? detail?.reflection ?? [world.thesis]).map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
+
+          <p className="mt-7 border-t border-[#8f6f2a]/30 pt-5 text-[10px] uppercase leading-6 tracking-[0.25em] text-[#d6ad45]">
+            Companion pages are not public yet. This preview marks the future premium reading layer.
+          </p>
         </article>
       </section>
 
       <section className="px-6 pb-5">
         <div className="rounded-lg border border-[#8f6f2a]/40 bg-gradient-to-br from-[#111] to-[#050505] px-8 py-7">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">World Compass</p>
-              <h2 className="mt-3 font-serif text-3xl font-light">Where this world sits in the anthology.</h2>
-              <p className="mt-3 max-w-4xl text-sm leading-7 text-[#d8ccb2]">
-                {worldEssay?.compassNote ?? "This world is one coordinate in the anthology's larger argument."}
-              </p>
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">World Compass</p>
+            <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[10px] uppercase leading-6 tracking-[0.25em] text-[#9f8f70]">
+              <span>{atlasIdeas.length || world.ideas.length} Ideas</span>
+              <span>{world.market} Market</span>
             </div>
-            <div className="text-right text-[10px] uppercase leading-6 tracking-[0.25em] text-[#9f8f70]">
-              <p>{atlasIdeas.length || world.ideas.length} Ideas</p>
-              <p>{world.market} Market</p>
-            </div>
+            <h2 className="mt-3 font-serif text-3xl font-light">Where this world sits in the anthology.</h2>
+            <p className="mt-3 max-w-[760px] text-sm leading-7 text-[#d8ccb2]">
+              {worldEssay?.compassNote ?? "This world is one coordinate in the anthology's larger argument."}
+            </p>
           </div>
 
           <div className="mt-6 grid gap-4 lg:grid-cols-4">
@@ -211,36 +302,6 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
             </div>
           </div>
         </div>
-      </section>
-
-      <section className="grid w-full gap-5 px-6 pb-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <article className="rounded-lg border border-[#8f6f2a]/40 bg-gradient-to-br from-[#111] to-[#050505] px-8 py-7">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">Read an Excerpt</p>
-          <h2 className="mt-3 font-serif text-3xl font-light">{detail?.excerptLabel ?? "Opening pages coming soon"}</h2>
-          <p className="mt-5 text-sm leading-7 text-[#d8ccb2]">
-            {detail?.excerptNote ?? "This world will eventually include a first excerpt or opening chapter preview."}
-          </p>
-          {detail?.excerptText?.length ? (
-            <div className="mt-5 space-y-3 border-t border-[#8f6f2a]/30 pt-5 text-sm leading-7 text-[#d8ccb2]">
-              {detail.excerptText.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-          ) : null}
-          <button className="mt-6 cursor-not-allowed border border-[#8f6f2a] px-5 py-2.5 text-[10px] uppercase tracking-[0.22em] text-[#9f8f70]">
-            {detail?.excerptStatus === "available" ? "Preview Only" : "Coming Soon"}
-          </button>
-        </article>
-
-        <article className="rounded-lg border border-[#8f6f2a]/40 bg-gradient-to-br from-[#111] to-[#050505] px-8 py-7">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">Author Note</p>
-          <h2 className="mt-3 font-serif text-3xl font-light">A note from the anthology.</h2>
-          <div className="mt-5 space-y-4 text-sm leading-7 text-[#d8ccb2]">
-            {(detail?.authorNote ?? ["This world will continue to expand as the anthology moves from architecture into the stories themselves."]).map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-        </article>
       </section>
 
       <section className="px-6 pb-14">
@@ -293,7 +354,7 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
 
       <footer className="border-t border-[#8f6f2a]/30 px-6 py-7 text-[10px] text-[#9f8f70]">
         <div className="flex w-full justify-between">
-          <p>Â© 2026 The Commodified Self Press</p>
+          <p>© 2026 The Commodified Self Press</p>
           <p>Alphonse Damas</p>
         </div>
       </footer>

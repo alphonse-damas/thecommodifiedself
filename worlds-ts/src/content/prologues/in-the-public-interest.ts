@@ -1,0 +1,114 @@
+﻿export const in_the_public_interest_prologue = {
+  slug: "in-the-public-interest",
+  title: "In-The-Public-Interest",
+  previewStart: 0,
+  previewLength: 3,
+  previewCharacters: 780,
+  paragraphs: [
+    `Prologue 
+The Good of the Many 
+History has a curious habit of disguising its most important questions. 
+The questions themselves are rarely hidden. They stand before us in broad daylight, 
+announced from podiums, printed across newspapers, and repeated endlessly by experts, 
+politicians, and scholars. Yet somehow we still fail to recognize them. We become 
+captivated by the spectacle surrounding the question while overlooking the question itself. 
+The Crisis of 2147 was one such example. 
+For nearly half a century, students across the Orion Compact have been taught that 
+humanity saved the galaxy. Schoolchildren can recite the numbers from memory. Three 
+hundred and twelve inhabited worlds affected. Eight billion projected deaths. Economic 
+collapse across six sectors of interstellar commerce. The greatest humanitarian 
+emergency in recorded history. 
+The story is taught as a triumph. 
+The day Earth answered the call. 
+The day science prevailed. 
+The day civilization chose cooperation over extinction. 
+It is a beautiful story. 
+It is also incomplete. 
+The plague was real. The suffering was real. The desperation was real. Entire worlds stood 
+at the edge of oblivion. Families buried their dead while researchers exhausted every 
+conceivable solution. When the first alien vessels arrived in Earth's orbit, they did not come 
+as conquerors. They came as petitioners. Their hands were empty. Their pride was broken. 
+They came seeking help. 
+No serious person disputes these facts. 
+What remains disputed is something else entirely. 
+The question was never whether billions of lives were worth saving. 
+The question was who possessed the authority to decide how those lives would be saved. 
+At the time, few people noticed the distinction. 
+Emergencies have a way of simplifying moral landscapes. Faced with catastrophe, 
+societies become impatient with nuance. Questions that would normally demand years of 
+debate are suddenly treated as obstacles. Doubt becomes selfishness. Caution becomes 
+obstruction. Consent becomes an inconvenience. 
+There is a reason for this. 
+A burning building does not inspire philosophical reflection. It inspires action. 
+The problem, of course, is that some buildings burn for a very long time. 
+Long enough for temporary measures to become permanent. 
+Long enough for exceptions to become policy. 
+Long enough for necessity to become habit. 
+History is filled with examples. 
+Governments have always discovered new powers during emergencies. 
+They have rarely surrendered them voluntarily. 
+But this story is not primarily about governments. 
+Nor is it truly about aliens. 
+The participants believed it was. 
+The news broadcasts certainly did. 
+The politicians, scientists, and corporate executives spent years arguing over vaccines, 
+production schedules, extraction targets, distribution quotas, and mortality projections. 
+Entire careers were built upon answering questions that, in hindsight, seem almost 
+secondary. 
+The real subject of the crisis was hidden beneath the language of logistics. 
+The real subject was ownership. 
+More specifically, ownership of oneself. 
+There exists an uncomfortable tendency among civilizations"”human and otherwise"”to 
+mistake dependence for entitlement. 
+The logic unfolds predictably. 
+A thing is needed. 
+The need is urgent. 
+The urgency is genuine. 
+Therefore access becomes assumed. 
+And once access becomes assumed, consent begins to appear unreasonable. 
+After all, lives are at stake. 
+What kind of person says no when billions are dying? 
+It is a powerful question. 
+Perhaps the most powerful question ever devised. 
+Powerful enough to silence other questions. 
+Questions such as: 
+Who was consulted? 
+Who benefits? 
+Who bears the burden? 
+Who decides? 
+These questions were not ignored because people were evil. 
+That would be a simpler story. 
+They were ignored because most people believed themselves to be good. 
+That is what made the crisis dangerous. 
+The architects of the extraction program considered themselves humanitarians. 
+The legislators who expanded emergency powers considered themselves protectors. 
+The journalists who condemned resistance considered themselves advocates for life. 
+Even many of those who surrendered their autonomy did so out of compassion. 
+No villain ever stepped forward to announce his intentions. 
+No tyrant declared himself king. 
+The machinery moved because millions of ordinary people believed they were serving a 
+noble cause. 
+Perhaps they were. 
+History remains divided. 
+What is beyond dispute is that the crisis revealed something humanity had spent centuries 
+attempting to forget. 
+A society's commitment to freedom is not measured when freedom is convenient. 
+It is measured when freedom becomes expensive. 
+The plague tested the galaxy. 
+The response tested humanity. 
+Most histories remember the first. 
+This account concerns the second. 
+Because the vaccine that saved billions was not the most important discovery of the age. 
+The most important discovery was made by a people who looked upon the weight of the 
+world's expectations and asked a question that no one had prepared to answer: 
+What happens when the public interest demands something that does not belong to the 
+public? 
+The answer changed the course of history. 
+Though not in the way anyone expected.`
+  ],
+};
+
+
+
+
+
