@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useId, useState, type CSSProperties, type ReactNode } from "react";
+import ReaderToolbar from "@/components/reader/ReaderToolbar";
+import { useReaderPreferences } from "@/context/ReaderPreferencesContext";
 
 type ExpandableTextProps = {
   paragraphs: string[];
@@ -20,6 +22,9 @@ type ExpandableTextProps = {
   scrollParagraphThreshold?: number;
   scrollCharacterThreshold?: number;
   pinnedContent?: ReactNode;
+  readerControlsId?: string;
+  readAloudText?: string;
+  enableReaderControls?: boolean;
 };
 
 function trimToCharacterLimit(paragraphs: string[], limit: number) {
@@ -63,8 +68,14 @@ export default function ExpandableText({
   scrollParagraphThreshold = 6,
   scrollCharacterThreshold = 1200,
   pinnedContent,
+  readerControlsId,
+  readAloudText,
+  enableReaderControls = false,
 }: ExpandableTextProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const generatedId = useId();
+  const { fontScale } = useReaderPreferences();
+
   const previewParagraphs = paragraphs.slice(previewStart);
   const visibleParagraphs = isExpanded
     ? paragraphs
@@ -94,8 +105,9 @@ export default function ExpandableText({
     .filter(Boolean)
     .join(" ");
 
-  const contentStyle: CSSProperties =
-    shouldScrollExpandedContent
+  const contentStyle: CSSProperties = {
+    fontSize: `${fontScale}em`,
+    ...(shouldScrollExpandedContent
       ? {
           maxHeight: expandedMaxHeight,
           overflowY: "auto",
@@ -104,7 +116,8 @@ export default function ExpandableText({
           scrollbarColor: "#8f6f2a #090909",
           scrollbarWidth: "thin",
         }
-      : {};
+      : {}),
+  };
 
   const toggleButton = hasMore ? (
     <button
@@ -116,10 +129,20 @@ export default function ExpandableText({
     </button>
   ) : null;
 
+  const controls = enableReaderControls ? (
+    <ReaderToolbar
+      controlsId={readerControlsId ?? generatedId}
+      textToRead={readAloudText ?? paragraphs.join("\n\n")}
+      toggleButton={toggleButton}
+    />
+  ) : (
+    toggleButton
+  );
+
   return (
     <div className={className}>
-      {controlsPosition === "top" && toggleButton ? (
-        <div className={controlsClassName || "mb-6"}>{toggleButton}</div>
+      {controlsPosition === "top" && controls ? (
+        <div className={controlsClassName || "mb-6"}>{controls}</div>
       ) : null}
 
       {pinnedContent ? pinnedContent : null}
@@ -134,8 +157,8 @@ export default function ExpandableText({
         </div>
       </div>
 
-      {controlsPosition === "bottom" && toggleButton ? (
-        <div className={controlsClassName || "mt-6"}>{toggleButton}</div>
+      {controlsPosition === "bottom" && controls ? (
+        <div className={controlsClassName || "mt-6"}>{controls}</div>
       ) : null}
     </div>
   );

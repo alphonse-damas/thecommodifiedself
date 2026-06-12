@@ -18,7 +18,7 @@ export default function Home() {
       setActiveHeroIndex((currentIndex) =>
         currentIndex === featuredWorlds.length - 1 ? 0 : currentIndex + 1,
       );
-    }, 20000);
+    }, 7000);
 
     return () => window.clearInterval(interval);
   }, [isPaused, rotationKey]);

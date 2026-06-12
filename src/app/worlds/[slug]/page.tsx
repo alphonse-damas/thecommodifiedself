@@ -42,6 +42,17 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
   const prologueHeading = hasPrologueHeading ? prologueParagraphs[0] : null;
   const prologueSubtitle = hasPrologueHeading ? prologueParagraphs[1] : null;
   const prologueReadingParagraphs = hasPrologueHeading ? prologueParagraphs.slice(2) : prologueParagraphs;
+  const synopsisParagraphs = detail?.synopsis ?? world.description;
+  const synopsisReadAloudText = ["World Synopsis", "The story inside the world.", ...synopsisParagraphs].join("\n\n");
+  const prologueReadAloudText = [
+    "Opening Pages",
+    prologue?.title ?? detail?.excerptLabel ?? "Opening pages",
+    prologueHeading,
+    prologueSubtitle,
+    ...prologueReadingParagraphs,
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 
   return (
     <main className="min-h-screen w-full overflow-x-hidden bg-[#050505] text-[#f4ead7]">
@@ -126,7 +137,7 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
           <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">World Synopsis</p>
           <h2 className="mt-3 font-serif text-3xl font-light">The story inside the world.</h2>
           <ExpandableText
-            paragraphs={detail?.synopsis ?? world.description}
+            paragraphs={synopsisParagraphs}
             initialCount={4}
             className="mt-5 text-sm leading-7 text-[#d8ccb2]"
             contentClassName="mt-6"
@@ -140,6 +151,9 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
             scrollParagraphThreshold={6}
             scrollCharacterThreshold={1200}
             pinnedContent={<div key="world-synopsis-pinned-divider" className="mt-7 border-t border-[#8f6f2a]/30" />}
+            enableReaderControls
+            readerControlsId={`world-synopsis-${world.slug}`}
+            readAloudText={synopsisReadAloudText}
           />
         </article>
 
@@ -189,6 +203,9 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
                   <div key="prologue-pinned-divider" className="mt-7 border-t border-[#8f6f2a]/30" />
                 )
               }
+              enableReaderControls
+              readerControlsId={`opening-pages-${world.slug}`}
+              readAloudText={prologueReadAloudText}
             />
           ) : (
             <div className="mt-7 border-t border-[#8f6f2a]/30 pt-6">
