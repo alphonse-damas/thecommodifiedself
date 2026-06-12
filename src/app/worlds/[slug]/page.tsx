@@ -7,6 +7,14 @@ import { getWorldDetail } from "@/content/world-details";
 import { getWorldConnections, getWorldEssay, getWorldRelationship } from "@/content/world-essays";
 import { getIdeaByName, type Idea } from "@/lib/ideas";
 import { getMarketForWorld } from "@/lib/markets";
+import {
+  getAdjacentCanonWorlds,
+  getCanonWorld,
+  getConnectionsForWorld,
+  getContradictionsForWorld,
+  readingOrderGraph,
+  type WorldSlug,
+} from "@/content/canon/worldCanonRegistry";
 import { getRelatedWorlds, getWorldBySlug, worlds } from "@/lib/worlds";
 
 export function generateStaticParams() {
@@ -33,6 +41,14 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
   const atlasIdeas = world.ideas
     .map((ideaName) => getIdeaByName(ideaName))
     .filter((idea): idea is Idea => Boolean(idea));
+  const canonSlug = world.slug as WorldSlug;
+  const canonWorld = getCanonWorld(canonSlug);
+  const adjacentCanonWorlds = getAdjacentCanonWorlds(canonSlug);
+  const canonConnections = getConnectionsForWorld(canonSlug);
+  const canonContradictions = getContradictionsForWorld(canonSlug);
+  const canonReadingPaths = Object.values(readingOrderGraph).filter((path) =>
+    path.nodes.some((node) => node.slug === canonSlug),
+  );
 
   const prologueParagraphs = prologue?.paragraphs ?? detail?.excerptText ?? [];
   const prologuePreviewStart = prologue?.previewStart ?? 0;
@@ -258,6 +274,120 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
             Companion pages are not public yet. This preview marks the future premium reading layer.
           </p>
         </article>
+      </section>
+
+
+      <section className="px-6 pb-5">
+        <div className="rounded-lg border border-[#8f6f2a]/40 bg-gradient-to-br from-[#111] to-[#050505] px-8 py-7">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">Canon Position</p>
+              <h2 className="mt-3 font-serif text-3xl font-light">World {canonWorld.anthologyPosition} of {worlds.length}</h2>
+              <p className="mt-3 max-w-[760px] text-sm leading-7 text-[#d8ccb2]">{canonWorld.canonRole}</p>
+            </div>
+
+            <div className="flex flex-wrap gap-3 text-[10px] uppercase tracking-[0.22em]">
+              {adjacentCanonWorlds.previous ? (
+                <Link
+                  href={`/worlds/${adjacentCanonWorlds.previous.slug}`}
+                  className="border border-[#8f6f2a]/50 px-4 py-2 text-[#cdbf9f] transition hover:border-[#d6ad45] hover:text-[#d6ad45]"
+                >
+                  Previous: {adjacentCanonWorlds.previous.title}
+                </Link>
+              ) : null}
+              {adjacentCanonWorlds.next ? (
+                <Link
+                  href={`/worlds/${adjacentCanonWorlds.next.slug}`}
+                  className="border border-[#8f6f2a]/50 px-4 py-2 text-[#cdbf9f] transition hover:border-[#d6ad45] hover:text-[#d6ad45]"
+                >
+                  Next: {adjacentCanonWorlds.next.title}
+                </Link>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            <div className="rounded border border-[#8f6f2a]/40 bg-[#090909] p-5">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Canon Question</p>
+              <p className="mt-3 text-sm leading-6 text-[#d8ccb2]">{canonWorld.coreQuestion}</p>
+            </div>
+
+            <div className="rounded border border-[#8f6f2a]/40 bg-[#090909] p-5">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Canon Ideas</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {[...canonWorld.primaryIdeas, ...canonWorld.secondaryIdeas].map((idea) => (
+                  <Link
+                    key={idea}
+                    href={`/map/${idea}`}
+                    className="border border-[#8f6f2a]/70 px-2 py-1 text-[9px] uppercase tracking-[0.18em] text-[#d6ad45] transition hover:border-[#d6ad45] hover:text-[#f4ead7]"
+                  >
+                    {idea}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded border border-[#8f6f2a]/40 bg-[#090909] p-5">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Canon Pressure</p>
+              <p className="mt-3 text-sm leading-6 text-[#d8ccb2]">{canonWorld.pressurePoint}</p>
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-4 xl:grid-cols-3">
+            <div className="rounded border border-[#8f6f2a]/40 bg-[#090909] p-5 xl:col-span-1">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Reading Paths</p>
+              <div className="mt-4 space-y-3">
+                {canonReadingPaths.map((path) => {
+                  const node = path.nodes.find((pathNode) => pathNode.slug === canonSlug);
+
+                  return (
+                    <div key={path.key} className="border-t border-[#8f6f2a]/25 pt-3 first:border-t-0 first:pt-0">
+                      <p className="font-serif text-lg text-[#f4ead7]">{path.label}</p>
+                      <p className="mt-1 text-xs leading-5 text-[#9f8f70]">Step {node?.order ?? "—"}: {node?.reason}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="rounded border border-[#8f6f2a]/40 bg-[#090909] p-5 xl:col-span-2">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Canon Connections</p>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                {canonConnections.slice(0, 4).map((connection) => {
+                  const connectedSlug = connection.from === canonSlug ? connection.to : connection.from;
+                  const connectedWorld = getCanonWorld(connectedSlug);
+
+                  return (
+                    <Link
+                      key={connection.id}
+                      href={`/worlds/${connectedSlug}`}
+                      className="border border-[#8f6f2a]/35 bg-[#050505] p-4 transition hover:border-[#d6ad45]/70"
+                    >
+                      <p className="text-[9px] uppercase tracking-[0.25em] text-[#d6ad45]">{connection.type.replaceAll("-", " ")} · Strength {connection.strength}</p>
+                      <p className="mt-2 font-serif text-lg text-[#f4ead7]">{connectedWorld.title}</p>
+                      <p className="mt-2 text-xs leading-5 text-[#cdbf9f]">{connection.label}</p>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {canonContradictions.length ? (
+            <div className="mt-5 rounded border border-[#8f6f2a]/40 bg-[#090909] p-5">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Canon Contradictions</p>
+              <div className="mt-4 grid gap-3 lg:grid-cols-2">
+                {canonContradictions.map((contradiction) => (
+                  <div key={contradiction.id} className="border border-[#8f6f2a]/35 bg-[#050505] p-4">
+                    <p className="text-[9px] uppercase tracking-[0.25em] text-[#d6ad45]">{contradiction.type}</p>
+                    <p className="mt-2 font-serif text-lg text-[#f4ead7]">{contradiction.readerQuestion}</p>
+                    <p className="mt-2 text-xs leading-5 text-[#cdbf9f]">{contradiction.contradiction}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
       </section>
 
       <section className="px-6 pb-5">
