@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -33,10 +34,93 @@ function clampFontScale(value: number) {
   return Math.min(MAX_FONT_SCALE, Math.max(MIN_FONT_SCALE, Number(value.toFixed(2))));
 }
 
+function splitLongUnit(unit: string, maxLength: number) {
+  const chunks: string[] = [];
+  const sentences = unit.match(/[^.!?]+[.!?]+[\"”']?|[^.!?]+$/g) ?? [unit];
+  let current = "";
+
+  for (const sentence of sentences) {
+    const cleanSentence = sentence.trim();
+    if (!cleanSentence) continue;
+
+    if (cleanSentence.length > maxLength) {
+      if (current.trim()) {
+        chunks.push(current.trim());
+        current = "";
+      }
+
+      const words = cleanSentence.split(/\s+/);
+      let wordChunk = "";
+
+      for (const word of words) {
+        const next = wordChunk ? `${wordChunk} ${word}` : word;
+        if (next.length > maxLength && wordChunk.trim()) {
+          chunks.push(wordChunk.trim());
+          wordChunk = word;
+        } else {
+          wordChunk = next;
+        }
+      }
+
+      if (wordChunk.trim()) chunks.push(wordChunk.trim());
+      continue;
+    }
+
+    const next = current ? `${current} ${cleanSentence}` : cleanSentence;
+    if (next.length > maxLength && current.trim()) {
+      chunks.push(current.trim());
+      current = cleanSentence;
+    } else {
+      current = next;
+    }
+  }
+
+  if (current.trim()) chunks.push(current.trim());
+  return chunks;
+}
+
+function chunkTextForSpeech(text: string, maxLength = 700) {
+  const normalizedText = text
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+
+  if (!normalizedText) return [];
+
+  const units = normalizedText.split(/\n{2,}/).map((unit) => unit.trim()).filter(Boolean);
+  const chunks: string[] = [];
+  let current = "";
+
+  for (const unit of units) {
+    if (unit.length > maxLength) {
+      if (current.trim()) {
+        chunks.push(current.trim());
+        current = "";
+      }
+      chunks.push(...splitLongUnit(unit, maxLength));
+      continue;
+    }
+
+    const next = current ? `${current}\n\n${unit}` : unit;
+    if (next.length > maxLength && current.trim()) {
+      chunks.push(current.trim());
+      current = unit;
+    } else {
+      current = next;
+    }
+  }
+
+  if (current.trim()) chunks.push(current.trim());
+  return chunks;
+}
+
 export function ReaderPreferencesProvider({ children }: { children: ReactNode }) {
   const [fontScale, setFontScale] = useState(1);
   const [readingId, setReadingId] = useState<string | null>(null);
   const [speechSupported, setSpeechSupported] = useState(false);
+  const readingRunRef = useRef(0);
 
   useEffect(() => {
     setSpeechSupported(typeof window !== "undefined" && "speechSynthesis" in window);
@@ -76,6 +160,7 @@ export function ReaderPreferencesProvider({ children }: { children: ReactNode })
   }, []);
 
   const stopReading = useCallback(() => {
+    readingRunRef.current += 1;
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
@@ -86,19 +171,43 @@ export function ReaderPreferencesProvider({ children }: { children: ReactNode })
     (id: string, text: string) => {
       if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
 
-      const cleanText = text.replace(/\s+/g, " ").trim();
-      if (!cleanText) return;
+      const speechChunks = chunkTextForSpeech(text);
+      if (!speechChunks.length) return;
 
       window.speechSynthesis.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(cleanText);
-      utterance.rate = 1;
-      utterance.pitch = 1;
-      utterance.onend = () => setReadingId(null);
-      utterance.onerror = () => setReadingId(null);
-
+      const runId = readingRunRef.current + 1;
+      readingRunRef.current = runId;
       setReadingId(id);
-      window.speechSynthesis.speak(utterance);
+
+      let chunkIndex = 0;
+
+      const speakNextChunk = () => {
+        if (readingRunRef.current !== runId) return;
+
+        const currentChunk = speechChunks[chunkIndex];
+        if (!currentChunk) {
+          setReadingId(null);
+          return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(currentChunk);
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        utterance.onend = () => {
+          chunkIndex += 1;
+          speakNextChunk();
+        };
+        utterance.onerror = () => {
+          if (readingRunRef.current === runId) {
+            setReadingId(null);
+          }
+        };
+
+        window.speechSynthesis.speak(utterance);
+      };
+
+      window.setTimeout(speakNextChunk, 75);
     },
     [],
   );
