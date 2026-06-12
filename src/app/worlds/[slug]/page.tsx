@@ -4,18 +4,35 @@ import { notFound } from "next/navigation";
 import ExpandableText from "@/components/ExpandableText";
 import { getPrologue } from "@/content/prologues";
 import { getWorldDetail } from "@/content/world-details";
-import { getWorldConnections, getWorldEssay, getWorldRelationship } from "@/content/world-essays";
-import { getIdeaByName, type Idea } from "@/lib/ideas";
 import { getMarketForWorld } from "@/lib/markets";
 import {
   getAdjacentCanonWorlds,
   getCanonWorld,
+  getCanonCompass,
+  getConnectedCanonWorlds,
   getConnectionsForWorld,
   getContradictionsForWorld,
   readingOrderGraph,
+  type ConnectionType,
   type WorldSlug,
 } from "@/content/canon/worldCanonRegistry";
-import { getRelatedWorlds, getWorldBySlug, worlds } from "@/lib/worlds";
+import { getWorldBySlug, worlds } from "@/lib/worlds";
+
+
+const connectionTypeMeta: Record<ConnectionType, { icon: string; label: string }> = {
+  "direct-continuity": { icon: "→", label: "Direct Continuity" },
+  "shared-market": { icon: "◆", label: "Shared Market" },
+  "shared-idea": { icon: "◇", label: "Shared Idea" },
+  "thematic-echo": { icon: "≈", label: "Thematic Echo" },
+  "philosophical-counterpoint": { icon: "⚖", label: "Philosophical Counterpoint" },
+  "structural-rhyme": { icon: "▣", label: "Structural Rhyme" },
+  "consequence-chain": { icon: "➜", label: "Consequence Chain" },
+};
+
+function strengthBlocks(strength: 1 | 2 | 3 | 4 | 5) {
+  return `${"■".repeat(strength)}${"□".repeat(5 - strength)}`;
+}
+
 
 export function generateStaticParams() {
   return worlds.map((world) => ({ slug: world.slug }));
@@ -30,25 +47,19 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
   }
 
   const detail = getWorldDetail(world.slug);
-  const worldEssay = getWorldEssay(world.slug);
   const prologue = getPrologue(world.slug);
-  const atlasConnections = getWorldConnections(world.slug);
-  const relatedWorldsFromAtlas = atlasConnections
-    .map((connection) => getWorldBySlug(connection.slug))
-    .filter((relatedWorld): relatedWorld is NonNullable<ReturnType<typeof getWorldBySlug>> => Boolean(relatedWorld));
-  const relatedWorlds = relatedWorldsFromAtlas.length > 0 ? relatedWorldsFromAtlas.slice(0, 3) : getRelatedWorlds(world.slug, 3);
   const market = getMarketForWorld(world);
-  const atlasIdeas = world.ideas
-    .map((ideaName) => getIdeaByName(ideaName))
-    .filter((idea): idea is Idea => Boolean(idea));
   const canonSlug = world.slug as WorldSlug;
   const canonWorld = getCanonWorld(canonSlug);
+  const canonCompass = getCanonCompass(canonSlug);
   const adjacentCanonWorlds = getAdjacentCanonWorlds(canonSlug);
   const canonConnections = getConnectionsForWorld(canonSlug);
+  const connectedCanonWorlds = getConnectedCanonWorlds(canonSlug, 3);
   const canonContradictions = getContradictionsForWorld(canonSlug);
   const canonReadingPaths = Object.values(readingOrderGraph).filter((path) =>
     path.nodes.some((node) => node.slug === canonSlug),
   );
+  const canonicalPathNodes = readingOrderGraph.canonical.nodes;
 
   const prologueParagraphs = prologue?.paragraphs ?? detail?.excerptText ?? [];
   const prologuePreviewStart = prologue?.previewStart ?? 0;
@@ -357,14 +368,18 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
                   const connectedSlug = connection.from === canonSlug ? connection.to : connection.from;
                   const connectedWorld = getCanonWorld(connectedSlug);
 
+                  const connectionMeta = connectionTypeMeta[connection.type];
+
                   return (
                     <Link
                       key={connection.id}
                       href={`/worlds/${connectedSlug}`}
-                      className="border border-[#8f6f2a]/35 bg-[#050505] p-4 transition hover:border-[#d6ad45]/70"
+                      className="group border border-[#8f6f2a]/35 bg-[#050505] p-4 transition hover:border-[#d6ad45]/70"
                     >
-                      <p className="text-[9px] uppercase tracking-[0.25em] text-[#d6ad45]">{connection.type.replaceAll("-", " ")} · Strength {connection.strength}</p>
-                      <p className="mt-2 font-serif text-lg text-[#f4ead7]">{connectedWorld.title}</p>
+                      <p className="text-[9px] uppercase tracking-[0.25em] text-[#d6ad45]">
+                        {connectionMeta.icon} {connectionMeta.label} · {strengthBlocks(connection.strength)}
+                      </p>
+                      <p className="mt-2 font-serif text-lg text-[#f4ead7] group-hover:text-[#d6ad45]">{connectedWorld.title}</p>
                       <p className="mt-2 text-xs leading-5 text-[#cdbf9f]">{connection.label}</p>
                     </Link>
                   );
@@ -387,6 +402,42 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
               </div>
             </div>
           ) : null}
+
+          <div className="mt-5 rounded border border-[#8f6f2a]/40 bg-[#090909] p-5">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Canon Trail</p>
+                <p className="mt-2 text-xs leading-5 text-[#cdbf9f]">Follow the anthology in canonical order. The current world is highlighted.</p>
+              </div>
+              <Link href="/canon" className="text-[10px] uppercase tracking-[0.25em] text-[#cdbf9f] transition hover:text-[#d6ad45]">
+                Inspect Full Canon
+              </Link>
+            </div>
+
+            <div className="mt-5 grid gap-2 md:grid-cols-2 xl:grid-cols-7">
+              {canonicalPathNodes.map((node) => {
+                const trailWorld = getCanonWorld(node.slug);
+                const isCurrent = node.slug === canonSlug;
+
+                return (
+                  <Link
+                    key={`canon-trail-${node.slug}`}
+                    href={`/worlds/${node.slug}`}
+                    className={`rounded border px-3 py-3 transition ${
+                      isCurrent
+                        ? "border-[#d6ad45] bg-[#d6ad45]/10 text-[#f4ead7]"
+                        : "border-[#8f6f2a]/35 bg-[#050505] text-[#cdbf9f] hover:border-[#d6ad45]/70 hover:text-[#d6ad45]"
+                    }`}
+                  >
+                    <p className="text-[9px] uppercase tracking-[0.22em] text-[#d6ad45]">
+                      {String(node.order).padStart(2, "0")}
+                    </p>
+                    <p className="mt-2 line-clamp-2 font-serif text-sm leading-tight">{trailWorld.title}</p>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -395,57 +446,56 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
           <div>
             <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">World Compass</p>
             <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[10px] uppercase leading-6 tracking-[0.25em] text-[#9f8f70]">
-              <span>{atlasIdeas.length || world.ideas.length} Ideas</span>
-              <span>{world.market} Market</span>
+              <span>{canonCompass.ideas.length} Canon Ideas</span>
+              <span>{canonCompass.market.label} Market</span>
+              <span>{canonCompass.connections.length} Canon Connections</span>
+              <span>{canonCompass.readingPaths.length} Reading Paths</span>
             </div>
             <h2 className="mt-3 font-serif text-3xl font-light">Where this world sits in the anthology.</h2>
-            <p className="mt-3 max-w-[760px] text-sm leading-7 text-[#d8ccb2]">
-              {worldEssay?.compassNote ?? "This world is one coordinate in the anthology's larger argument."}
+            <p className="mt-3 max-w-[820px] text-sm leading-7 text-[#d8ccb2]">
+              {canonCompass.compassNote}
             </p>
           </div>
 
           <div className="mt-6 grid gap-4 lg:grid-cols-4">
             <Link
-              href={market ? `/markets/${market.slug}` : "/markets"}
+              href={`/markets/${canonCompass.market.key}`}
               className="rounded border border-[#8f6f2a]/40 bg-[#090909] p-5 transition hover:border-[#d6ad45]/70"
             >
-              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Primary Market</p>
-              <p className="mt-3 font-serif text-3xl">{world.market}</p>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Canon Market</p>
+              <p className="mt-3 font-serif text-3xl">{canonCompass.market.label}</p>
               <p className="mt-3 text-xs leading-5 text-[#cdbf9f]">
-                {market?.question ?? "Explore the market this world belongs to."}
+                {canonCompass.market.thesis}
               </p>
             </Link>
 
             <div className="rounded border border-[#8f6f2a]/40 bg-[#090909] p-5">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Primary Ideas</p>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Canon Ideas</p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {world.ideas.slice(0, 5).map((ideaName) => {
-                  const idea = getIdeaByName(ideaName);
-                  const label = (
-                    <span className="inline-block border border-[#8f6f2a]/70 px-2 py-1 text-[9px] uppercase tracking-[0.18em] text-[#d6ad45]">
-                      {ideaName}
-                    </span>
-                  );
-
-                  return idea ? (
-                    <Link key={ideaName} href={`/map/${idea.slug}`} className="transition hover:opacity-80">
-                      {label}
-                    </Link>
-                  ) : (
-                    <span key={ideaName}>{label}</span>
-                  );
-                })}
+                {canonCompass.ideas.map((idea) => (
+                  <Link
+                    key={idea.key}
+                    href={`/map/${idea.key}`}
+                    title={idea.thesis}
+                    className="inline-block border border-[#8f6f2a]/70 px-2 py-1 text-[9px] uppercase tracking-[0.18em] text-[#d6ad45] transition hover:border-[#d6ad45] hover:text-[#f4ead7]"
+                  >
+                    {idea.label}
+                  </Link>
+                ))}
               </div>
+              <p className="mt-4 text-xs leading-5 text-[#9f8f70]">
+                Primary: {canonCompass.primaryIdeaKeys.join(", ")}
+              </p>
             </div>
 
             <div className="rounded border border-[#8f6f2a]/40 bg-[#090909] p-5">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Pressure Point</p>
-              <p className="mt-3 text-sm leading-6 text-[#d8ccb2]">{worldEssay?.pressurePoint ?? world.thesis}</p>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Canon Pressure</p>
+              <p className="mt-3 text-sm leading-6 text-[#d8ccb2]">{canonCompass.world.pressurePoint}</p>
             </div>
 
             <div className="rounded border border-[#8f6f2a]/40 bg-[#090909] p-5">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Threat</p>
-              <p className="mt-3 text-sm leading-6 text-[#d8ccb2]">{worldEssay?.threat ?? "The self becomes easier to manage than to understand."}</p>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#d6ad45]">Canon Threat</p>
+              <p className="mt-3 text-sm leading-6 text-[#d8ccb2]">{canonCompass.threat}</p>
             </div>
           </div>
         </div>
@@ -454,29 +504,32 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
       <section className="px-6 pb-14">
         <div className="rounded-lg border border-[#8f6f2a]/40 px-8 py-7">
           <div className="mb-5 flex items-center justify-between">
-            <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">Atlas Connections</p>
+            <p className="text-[10px] uppercase tracking-[0.35em] text-[#d6ad45]">Canon Connections</p>
             <Link href="/worlds" className="text-[10px] uppercase tracking-[0.25em] text-[#cdbf9f] transition hover:text-[#d6ad45]">
               Back to Catalog
             </Link>
           </div>
 
-          <h2 className="mb-5 font-serif text-3xl font-light">Why these worlds are nearby.</h2>
+          <h2 className="mb-2 font-serif text-3xl font-light">Why these worlds are nearby.</h2>
+          <p className="mb-5 max-w-[760px] text-sm leading-7 text-[#cdbf9f]">
+            These nearby worlds are now selected from the World Canon Registry connection graph, ranked by canon strength.
+          </p>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {relatedWorlds.map((relatedWorld) => {
-              const relationship = getWorldRelationship(world.slug, relatedWorld.slug);
+            {connectedCanonWorlds.map(({ world: connectedWorld, connection, direction }) => {
+              const relatedWorld = getWorldBySlug(connectedWorld.slug);
 
               return (
                 <Link
-                  key={relatedWorld.slug}
-                  href={`/worlds/${relatedWorld.slug}`}
+                  key={connection.id}
+                  href={`/worlds/${connectedWorld.slug}`}
                   className="group grid grid-cols-[88px_1fr] gap-4 border border-[#8f6f2a]/40 bg-[#0b0b0b] p-3 transition hover:border-[#d6ad45]/70"
                 >
-                  {relatedWorld.cover && (
+                  {relatedWorld?.cover ? (
                     <div className="relative aspect-[2/3] overflow-hidden">
                       <Image
                         src={relatedWorld.cover}
-                        alt={`${relatedWorld.title} cover`}
+                        alt={`${connectedWorld.title} cover`}
                         fill
                         quality={100}
                         sizes="88px"
@@ -484,12 +537,22 @@ export default async function WorldPage({ params }: { params: Promise<{ slug: st
                         unoptimized
                       />
                     </div>
+                  ) : (
+                    <div className="flex aspect-[2/3] items-center justify-center border border-[#8f6f2a]/30 bg-[#050505] text-[10px] uppercase tracking-[0.2em] text-[#8f6f2a]">
+                      Canon
+                    </div>
                   )}
+
                   <div className="flex flex-col justify-center">
-                    <p className="font-serif text-xl leading-tight">{relatedWorld.title}</p>
-                    <p className="mt-2 text-[9px] uppercase tracking-[0.22em] text-[#d6ad45]">{relatedWorld.market}</p>
+                    <p className="text-[9px] uppercase tracking-[0.22em] text-[#d6ad45]">
+                      {connectionTypeMeta[connection.type].icon} {connectionTypeMeta[connection.type].label} · {strengthBlocks(connection.strength)}
+                    </p>
+                    <p className="mt-2 font-serif text-xl leading-tight group-hover:text-[#d6ad45]">{connectedWorld.title}</p>
+                    <p className="mt-2 text-[9px] uppercase tracking-[0.22em] text-[#9f8f70]">
+                      {connectedWorld.market} Market · {direction === "outgoing" ? "Leads To" : "Echoes From"}
+                    </p>
                     <p className="mt-3 line-clamp-4 text-xs leading-5 text-[#cdbf9f]">
-                      {relationship ?? relatedWorld.thesis}
+                      {connection.rationale}
                     </p>
                   </div>
                 </Link>

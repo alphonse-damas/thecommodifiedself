@@ -67,3 +67,71 @@ including:
 - Contradiction Map
 - Reading Order Graph
 - Anthology Timeline
+
+
+## Phase 8A — World Canon Registry
+
+Status: COMPLETE
+
+### Achievement
+
+Implemented anthology canonical source of truth:
+
+- World Index
+- Market Index
+- Idea Index
+- Connection Graph
+- Contradiction Map
+- Reading Order Graph
+- Anthology Timeline
+
+### Registry Integration
+
+Registry successfully wired into:
+
+- /canon inspection page
+- /worlds/[slug]
+
+World pages now display:
+
+- Canon Position
+- Canon Question
+- Canon Ideas
+- Canon Pressure
+- Reading Paths
+- Canon Connections
+- Canon Contradictions
+- Previous / Next World navigation
+
+### Validation
+
+- Production build successful
+- Static generation successful
+- Canon navigation functioning
+- Registry validation framework implemented
+
+### Freeze Recommendation
+
+Tag:
+
+anthology-v8a-canon-registry
+
+## Phase 8B — Canon Navigation Layer
+
+Status: COMPLETE
+
+Implemented:
+
+- Registry-driven Connected Worlds
+- Clickable Canon Idea Navigation
+- Clickable Market Navigation
+- Canon Trail
+- Previous / Next World Navigation
+- Registry-driven Atlas Compass
+- Connection Type Indicators
+- Connection Strength Indicators
+
+Result:
+
+The World Canon Registry now functions as the anthology navigation engine and canonical source of truth.
+

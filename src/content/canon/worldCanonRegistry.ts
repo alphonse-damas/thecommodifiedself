@@ -122,6 +122,13 @@ export interface IdeaIndexEntry {
   marketKeys: MarketKey[];
 }
 
+
+export interface ConnectedCanonWorld {
+  world: CanonWorld;
+  connection: CanonConnection;
+  direction: "outgoing" | "incoming";
+}
+
 export interface CanonConnection {
   id: string;
   from: WorldSlug;
@@ -163,6 +170,19 @@ export interface TimelineEvent {
   title: string;
   worldSlugs: WorldSlug[];
   description: string;
+}
+
+export interface CanonCompass {
+  world: CanonWorld;
+  market: MarketIndexEntry;
+  ideas: IdeaIndexEntry[];
+  primaryIdeaKeys: IdeaKey[];
+  secondaryIdeaKeys: IdeaKey[];
+  readingPaths: ReadingPath[];
+  connections: ConnectedCanonWorld[];
+  contradictions: CanonContradiction[];
+  compassNote: string;
+  threat: string;
 }
 
 export const worldIndex: Record<WorldSlug, CanonWorld> = {
@@ -858,6 +878,29 @@ export function getContradictionsForWorld(slug: WorldSlug): CanonContradiction[]
   return contradictionMap.filter((contradiction) => contradiction.worldSlugs.includes(slug));
 }
 
+
+export function getConnectedCanonWorlds(slug: WorldSlug, limit?: number): ConnectedCanonWorld[] {
+  const connected = getConnectionsForWorld(slug)
+    .map((connection) => {
+      const connectedSlug = connection.from === slug ? connection.to : connection.from;
+
+      return {
+        world: worldIndex[connectedSlug],
+        connection,
+        direction: connection.from === slug ? "outgoing" : "incoming",
+      } satisfies ConnectedCanonWorld;
+    })
+    .sort((a, b) => {
+      if (b.connection.strength !== a.connection.strength) {
+        return b.connection.strength - a.connection.strength;
+      }
+
+      return a.world.anthologyPosition - b.world.anthologyPosition;
+    });
+
+  return typeof limit === "number" ? connected.slice(0, limit) : connected;
+}
+
 export function getReadingPath(path: ReadingPathKey = "canonical"): ReadingPath {
   return readingOrderGraph[path];
 }
@@ -878,6 +921,36 @@ export function getAdjacentCanonWorlds(slug: WorldSlug): {
     previous: index > 0 ? ordered[index - 1] : null,
     current: worldIndex[slug],
     next: index >= 0 && index < ordered.length - 1 ? ordered[index + 1] : null,
+  };
+}
+
+
+export function getCanonCompass(slug: WorldSlug): CanonCompass {
+  const world = getCanonWorld(slug);
+  const market = marketIndex[world.market];
+  const primaryIdeaKeys = world.primaryIdeas;
+  const secondaryIdeaKeys = world.secondaryIdeas;
+  const ideas = [...primaryIdeaKeys, ...secondaryIdeaKeys].map((idea) => ideaIndex[idea]);
+  const readingPaths = Object.values(readingOrderGraph).filter((path) =>
+    path.nodes.some((node) => node.slug === slug),
+  );
+  const connections = getConnectedCanonWorlds(slug, 3);
+  const contradictions = getContradictionsForWorld(slug);
+  const dominantContradiction = contradictions[0];
+
+  return {
+    world,
+    market,
+    ideas,
+    primaryIdeaKeys,
+    secondaryIdeaKeys,
+    readingPaths,
+    connections,
+    contradictions,
+    compassNote: `${world.title} belongs to the ${market.label} market because ${market.thesis.charAt(0).toLowerCase()}${market.thesis.slice(1)}`,
+    threat: dominantContradiction
+      ? dominantContradiction.contradiction
+      : "The self becomes easier to classify, price, or manage than to understand.",
   };
 }
 

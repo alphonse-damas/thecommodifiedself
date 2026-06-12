@@ -1,4 +1,9 @@
 #To compress and archive folders/files
+Compress-Archive `
+  -Path .\src, .\package.json, .\tsconfig.json, .\next.config.ts `
+  -DestinationPath ".\thecommodifiedself-architecture-$(Get-Date -Format 'yyyyMMdd-HHmmss').zip" `
+  -Force
+
 Compress-Archive -Path .\src, .\package.json, .\tsconfig.json, .\next.config.ts -DestinationPath .\thecommodifiedself-architecture.zip -Force
 
 Compress-Archive -Path .\src -DestinationPath .\thecommodifiedself-src.zip  -Force
